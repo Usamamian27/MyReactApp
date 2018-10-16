@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {Consumer} from '../../Context';
 import TextInputGroup from '../layout/TextInputGroup';
-import uuid from 'uuid';
-
+import axios from 'axios';
 class AddContact extends Component {
 
    state= {
@@ -47,14 +46,17 @@ class AddContact extends Component {
 
        const newContact ={
 
-           // this is Shorcut method to do like    name = this.name email= this.email
-           id:uuid(),
+           // this is Shorcut method to do like    name = this.name email= this.emailid:uuid(),
            name,
            email,
            phone
        }
 
-       dispatch({type:'ADD_CONTACT',payload:newContact});
+       axios.post('https://jsonplaceholder.typicode.com/users', newContact)
+            .then(res => dispatch({type:'ADD_CONTACT',payload:res.data}))
+
+
+
 
 
         this.setState({
@@ -63,6 +65,8 @@ class AddContact extends Component {
             phone:'',
             errors:{}
         })
+
+        this.props.history.push('/');
 
     }
 
